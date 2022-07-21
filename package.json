@@ -1,21 +1,21 @@
 {
-  "name": "sidekickingesterbeta",
+  "name": "sidekick-client",
   "version": "1.0.0",
-  "description": "Open source runsidekick ingester ",
+  "description": "Sidekick Node.js Client",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/meminb/sidekickelastic.git"
+    "url": "git+https://github.com/runsidekick/sidekick-client-node.git"
   },
-  "author": "",
+  "author": "boroskoyo",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/meminb/sidekickelastic/issues"
+    "url": "https://github.com/runsidekick/sidekick-client-node/issues"
   },
-  "homepage": "https://github.com/meminb/sidekickelastic#readme",
+  "homepage": "https://github.com/runsidekick/sidekick-client-node#readme",
   "dependencies": {
     "ws": "^8.8.1"
   }
