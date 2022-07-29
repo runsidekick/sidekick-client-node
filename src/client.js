@@ -3,10 +3,10 @@ const WebSocket = require("ws");
 var reconnectInterval = 10000;
 var ws;
 
-var sidekickConnect = function (clientInfo) {
+var onTrigger = function (clientInfo) {
   const sidekick_host = clientInfo.sidekick_host
     ? clientInfo.sidekick_host
-    : "wss://broker.service.runsidekick.com";
+    : SIDEKICK_HOST ;
   const sidekick_port = clientInfo.sidekick_port
     ? clientInfo.sidekick_port
     : 443;
@@ -85,5 +85,5 @@ var sidekickConnect = function (clientInfo) {
 };
 
 module.exports = {
-  sidekickConnect,
+  onTrigger,
 };

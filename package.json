@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/runsidekick/sidekick-client-node#readme",
   "dependencies": {
+    "axios": "^0.27.2",
     "ws": "^8.8.1"
   }
 }
