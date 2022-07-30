@@ -48,7 +48,7 @@ class SidekickApi {
    * @param {boolean=} params.enableTracing
    * @param {boolean=} params.persist
    */
-   async putTracepoints(params) {
+  putTracepoints(params) {
     return this.#createPoint(common.TRACEPOINT_ENDPOINT, params);
   }
 
@@ -65,7 +65,7 @@ class SidekickApi {
    * @param {boolean=} params.enableTracing
    * @param {boolean=} params.persist
    */
-   async putLogpoint(params) {
+  putLogpoint(params) {
     return this.#createPoint(common.LOGPOINT_ENDPOINT, params);
   }
 
@@ -93,15 +93,15 @@ class SidekickApi {
       });
   }
 
-  async #removePoint(endpoint, tracepointLocation) {
+  async #removePoint(endpoint, pointLocation) {
     let config = {
       headers: this.#createHeaders({isPost:false}),
       data:
-        tracepointLocation.fileName +
+        pointLocation.fileName +
         "::" +
-        tracepointLocation.line +
+        pointLocation.line +
         "::" +
-        tracepointLocation.email,
+        pointLocation.email,
     };
     return axios
       .delete(this.sidekickHost + endpoint, config)
