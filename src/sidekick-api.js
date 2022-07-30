@@ -14,16 +14,18 @@ class SidekickApi {
   }
 
   /**
+   * Remove existing tracepoint from a file
    * @param {object} tracepointLocation - Tracepoint information to be removed
    * @param {string} tracepointLocation.fileName - Full name of file in version control
    * @param {number} tracepointLocation.line - Line of tracepoint
    * @param {string} tracepointLocation.email - Your sidekick email
    */
-  removeTracepoint(tracepointLocation) {
+ removeTracepoint(tracepointLocation,) {
     return this.#removePoint(common.TRACEPOINT_ENDPOINT, tracepointLocation);
   }
 
   /**
+   * Remove existing logpoint from a file
    * @param {object} logpointLocation - Logpoint information to be removed
    * @param {string} logpointLocation.fileName - Full name of file in version control
    * @param {number} logpointLocation.line - Line of tracepoint
@@ -33,44 +35,37 @@ class SidekickApi {
     return this.#removePoint(common.LOGPOINT_ENDPOINT, logpointLocation);
   }
 
+
   /**
-   *
+   * Create a tracepoint
    * @param {object} params
-   * @param {object} params.applicationFilters -wrong doc for now !!!!
-   * @param {string} params.applicationFilters.name
-   * @param {string} params.applicationFilters.version
-   * @param {string} params.applicationFilters.stage
-   * @param {Array=} params.applicationFilters.customTags
+   * @param {Array.<{name: String, version: String, stage: String, customTags: Array}>} params.applicationFilters - The properties of app that you are running
    *
-   * @param {string} params.fileName
-   * @param {number} params.lineNo
-   * @param {number=} params.expireSecs
-   * @param {number=} params.expireCount
+   * @param {string} params.fileName - Full name of file in version control
+   * @param {number} params.lineNo - Line of tracepoint
+   * @param {number=} params.expireSecs - Expire time of breakpoint in seconds
+   * @param {number=} params.expireCount - Hitcount of breakpoint
    * @param {boolean=} params.enableTracing
    * @param {boolean=} params.persist
    */
-  putTracepoints(params) {
+   async putTracepoints(params) {
     return this.#createPoint(common.TRACEPOINT_ENDPOINT, params);
   }
 
   /**
    *
    * @param {object} params
-   * @param {object} params.applicationFilters - wrong doc for now !!!!
-   * @param {string} params.applicationFilters.name
-   * @param {string} params.applicationFilters.version
-   * @param {string} params.applicationFilters.stage
-   * @param {Array=} params.applicationFilters.customTags
+   * @param {Array.<{name: String, version: String, stage: String, customTags: Array}>} params.applicationFilters - The properties of app that you are running
    *
-   * @param {string} params.fileName
-   * @param {number} params.lineNo
-   * @param {string|""} params.logExpression
-   * @param {number=} params.expireSecs
-   * @param {number=} params.expireCount
+   * @param {string} params.fileName - Full name of file in version control
+   * @param {number} params.lineNo - Line of tracepoint
+   * @param {string} params.logExpression - Expression for log
+   * @param {number=} params.expireSecs - Expire time of breakpoint in seconds
+   * @param {number=} params.expireCount - Hitcount of breakpoint
    * @param {boolean=} params.enableTracing
    * @param {boolean=} params.persist
    */
-  putLogpoint(params) {
+   async putLogpoint(params) {
     return this.#createPoint(common.LOGPOINT_ENDPOINT, params);
   }
 
@@ -87,7 +82,7 @@ class SidekickApi {
     let config = {
       headers: this.#createHeaders({isPost:true}),
     };
-    await axios
+    return axios
       .post(this.sidekickHost + endpoint, params, config)
       .then((res) => {
         console.log(res);
@@ -108,7 +103,7 @@ class SidekickApi {
         "::" +
         tracepointLocation.email,
     };
-    await axios
+    return axios
       .delete(this.sidekickHost + endpoint, config)
       .then((res) => {
         console.log(res);
