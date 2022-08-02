@@ -73,13 +73,14 @@ Sidekick Actions:
 ### Built With
 
 * [ws](https://github.com/websockets/ws)
+* [axios](https://github.com/axios/axios)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 
 ### Prerequisites
 
-tested with node v16.14.2
+Tested with node v16.14.2
 * npm
   ```sh
   npm install npm@latest -g
@@ -87,95 +88,120 @@ tested with node v16.14.2
 
 
 <!-- GETTING STARTED -->
-## Getting Started
+# Getting Started
 
 
-### Installation
+## Installation
 
 1. Install sidekick-client
-   ```sh
-   npm i sidekick-client
+   ```sh 
+   $ npm i sidekick-client
    ```
 
-2. Import sidekickConnect from sidekick-client
-    
-    ```js
-        const { sidekickConnect } = require('sidekick-client')
-    ```
-3. Create an `ingest` function that will send collected data to desired target:
-    ```js
-        function ingestFunc () {
-            return async function (data) {
-                // Implement your own function to send data to any target
-            }
-        }
-    ```
-4. Initialize Sidekick client with proper parameters.
-    
-    ```js
-        const { sidekickConnect } = require('sidekickingesterbeta')
+## Example usage
 
-        const sidekickClient = {
-            sidekick_email : <sidekick_email>, 
-            sidekick_password : <sidekick_password>, 
-            tracepointFunction : ingestFunc(),
-            logpointFunction : ingestFunc(),
-            stdout : false // enable console log
-        }
 
-        sidekickConnect(sidekickClient);
-        ```
+###  Put tracepoint on a line
+  1. Import `SidekickApi`  
+      ```js
+        const { SidekickApi} = require('sidekick-client')
+      ```
 
-  If you have an on-premise setup add the fields below to client object:
+  2. Create an instance from Sidekick Api
+      ```js
+        const apiClient = new SidekickApi({apiKey:<Your Api Key>, authToken:<Your Account Token>});
 
-   ```js
-    "sidekick_host": "ws://127.0.0.1",
-    "sidekick_port": "7777"
-   ```
+      ```
+  3. Create a parameter that contains your file information to put tracepoint.
+      ```js  
+        const params= {
+            applicationFilters: [
+                {
+                  name: "Demo application",
+                  version: "v1.0",
+                  stage: "prod"
+                }
+              ],
+            fileName: "gitlab.com/repos/...",
+            lineNo: 23,
+            expireSecs: -1,
+            expireCount: -1,
+            enableTracing: true,
+            persist: true
+      }
 
-  If have your user token you can use it instead of email & password :
+      ```
+  4. Call `putTracepoint` function
+      ```js
+        apiClient.putTracepoints(params);
+      ```
 
-   ```js
-    "sidekick_token": "<>"
-   ```
+  Then your tracepoint will be added to `line 23` in the given file. Also, you can use `SidekickApi` for any other operations such as removing tracepoint or putting log point.
 
-### Example usage
-You can use Sidekick client with any db integration, here is a elasticsearch integration example:
+<br>
+
+
+
+
+### Use custom ingest funtion for the tracepoints event
+
 
 1. Create a `config.json` according to your needs
    ```js
     "sidekick_tracepoint_index": "sidekick_tracepoint",
     "sidekick_logpoint_index": "sidekick_logpoint",
-    "sidekick_email":"<>",
-    "sidekick_password":"<>",
+    "sidekick_email": "<Email of your sidekick account>",
+    "sidekick_password": "<Password of your sidekick account>",
    ```
 
-2. Create an `ingest` function with using elasticsearch client:
-    ```js
 
+2. Import `onTrigger` from `sidekick-client`
+    
+    ```js
+        const { onTrigger } = require('sidekick-client')
+    ```
+3. Create an `ingest` function that will send collected data to desired target:
+    ```js
         function ingestFunc (index) {
             return async function (data) {
                 console.log(JSON.stringify({index,data}));
             }
         }
     ```
-3. Call sidekickconnect function with proper parameters.
+
+4. Initialize Sidekick client info with proper parameters.
     
     ```js
-        const { sidekickConnect } = require('sidekickingesterbeta')
-
-        const sidekickClient = {
+        const clientInfo = {
             sidekick_email : config['sidekick_email'], 
             sidekick_password : config['sidekick_password'], 
             tracepointFunction : ingestFunc(config['sidekick_tracepoint_index']),
             logpointFunction : ingestFunc(config['sidekick_logpoint_index'])
         }
 
-        sidekickConnect(sidekickClient);
+        onTrigger(clientInfo);
         ```
 
+Then your tracepoint events will be logged. You can customize the `ingest` function as you want.
 
-4. Run your app!
+
+<br>
+
+  If you have an on-premise setup add the fields below to client object (Optional):
+
+   ```js
+    "sidekick_host": "ws://127.0.0.1",
+    "sidekick_port": "7777"
+   ```
+
+  If have your user token you can use it instead of email & password (Optional):
+
+   ```js
+    "sidekick_token": "<>"
+   ```
+
+
+ 
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
