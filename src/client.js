@@ -54,7 +54,7 @@ var onTrigger = function (clientInfo) {
         }else if (dataJSON.name === "LogPointEvent") {
         
           if (logpointFunction) {
-              logpointFunction(data);
+              logpointFunction(dataJSON);
           }else{
             console.log("Logpoint function might not be initialized")
           }
