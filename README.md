@@ -180,7 +180,7 @@ Tested with node v16.14.2
         }
 
         onTrigger(clientInfo);
-        ```
+     ```
 
 Then your tracepoint events will be logged. You can customize the `ingest` function as you want.
 
