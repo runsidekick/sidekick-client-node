@@ -7,7 +7,7 @@ class SidekickApi {
    * @param {string} authToken - Your auth token from sidekick
    * @param {string} sidekickHost
    */
-  constructor({ apiKey, authToken }, sidekickHost = common.SIDEKICK_HOST) {
+  constructor({ apiKey, authToken }, sidekickHost = common.SIDEKICK_API_HOST) {
     this.sidekickHost = sidekickHost;
     this.apiKey = apiKey;
     this.authToken = authToken;

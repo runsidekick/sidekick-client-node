@@ -1,12 +1,12 @@
 const WebSocket = require("ws");
-
+const common = require("../common.js");
 var reconnectInterval = 10000;
 var ws;
 
 var onTrigger = function (clientInfo) {
   const sidekick_host = clientInfo.sidekick_host
     ? clientInfo.sidekick_host
-    : SIDEKICK_HOST ;
+    : common.SIDEKICK_HOST ;
   const sidekick_port = clientInfo.sidekick_port
     ? clientInfo.sidekick_port
     : 443;
@@ -85,5 +85,5 @@ var onTrigger = function (clientInfo) {
 };
 
 module.exports = {
-  onTrigger,
+  onTrigger
 };
