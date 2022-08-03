@@ -62,8 +62,7 @@ Sidekick Actions:
 * Logpoints open the way for dynamic logging to Sidekick users. Replacing traditional logging with dynamic logging has the potential to lower stage sizes, costs, and time for log searching while adding the ability to add new logpoints without editing the source code, redeploying or restarting the application
 ## Client Features
 
-* A tracepoint is basically a non-breaking remote breakpoint. In short, it takes a screenshot of the variables when the code hits that line.
-* Logpoints open the way for dynamic logging to Sidekick users. Replacing 
+* Sidekick Node Client opens up a new & headless way to use Sidekick. It allows you to both use custom ingest functions for the tracepoint/logpoint events and put/edit/delete your tracepoints/logpoints easily using code.
 
 
 <p align="right">(<a href="#top">back to top</a>)</p>
@@ -143,7 +142,7 @@ Tested with node v16.14.2
 
 
 
-### Use custom ingest funtion for the tracepoints event
+### Use custom ingest function for the tracepoint/logpoint events
 
 
 1. Create a `config.json` according to your needs
@@ -212,7 +211,7 @@ Then your tracepoint events will be logged. You can customize the `ingest` funct
 
 - [x] Add websocket support
 - [x] Custom ingest function
-- [ ] Add support for programattically putting logpoints & tracepoints
+- [x] Add support for programattically putting logpoints & tracepoints using REST API
 
 
 
