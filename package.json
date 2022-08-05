@@ -1,10 +1,17 @@
 {
-  "name": "sidekick-client",
+  "name": "@runsidekick/sidekick-client",
   "version": "1.0.0",
   "description": "Sidekick Node.js Client",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "release-patch": "release-it --ci --git.commit --git.push --git.tag --git.tagName='v${version}' --github.release --no-git.requireCleanWorkingDir --no-git.requireUpstream --npm.publish --npm.skipChecks",
+    "release-minor": "release-it minor --ci --git.commit --git.push --git.tag --git.tagName='v${version}' --github.release --no-git.requireCleanWorkingDir --no-git.requireUpstream --npm.publish --npm.skipChecks",
+    "release-major": "release-it major --ci --git.commit --git.push --git.tag --git.tagName='v${version}' --github.release --no-git.requireCleanWorkingDir --no-git.requireUpstream --npm.publish --npm.skipChecks",
+    "release-patch-without-tag": "release-it --ci --no-git.commit --no-git.push --no-git.tag --no-git.tagName='v${version}' --no-github.release --no-git.requireCleanWorkingDir --no-git.requireUpstream --npm.publish --npm.skipChecks",
+    "release-minor-without-tag": "release-it minor --ci --no-git.commit --no-git.push --no-git.tag --no-git.tagName='v${version}' --no-github.release --no-git.requireCleanWorkingDir --no-git.requireUpstream --npm.publish --npm.skipChecks",
+    "release-major-without-tag": "release-it major --ci --no-git.commit --no-git.push --no-git.tag --no-git.tagName='v${version}' --no-github.release --no-git.requireCleanWorkingDir --no-git.requireUpstream --npm.publish --npm.skipChecks",
+    "release-dry-run": "release-it --dry-run --ci --no-git.commit --no-git.push --no-git.tag --no-git.tagName='v${version}' --no-github.release --no-git.requireCleanWorkingDir --no-git.requireUpstream --no-npm.publish"
   },
   "repository": {
     "type": "git",
@@ -19,5 +26,12 @@
   "dependencies": {
     "axios": "^0.27.2",
     "ws": "^8.8.1"
+  },
+  "devDependencies": {
+    "release-it": "^14.5.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
   }
 }
