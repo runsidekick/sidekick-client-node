@@ -1,12 +1,12 @@
 const WebSocket = require("ws");
-
+const common = require("../common.js");
 var reconnectInterval = 10000;
 var ws;
 
-var sidekickConnect = function (clientInfo) {
+var onTrigger = function (clientInfo) {
   const sidekick_host = clientInfo.sidekick_host
     ? clientInfo.sidekick_host
-    : "wss://broker.service.runsidekick.com";
+    : common.SIDEKICK_HOST ;
   const sidekick_port = clientInfo.sidekick_port
     ? clientInfo.sidekick_port
     : 443;
@@ -54,7 +54,7 @@ var sidekickConnect = function (clientInfo) {
         }else if (dataJSON.name === "LogPointEvent") {
         
           if (logpointFunction) {
-              logpointFunction(data);
+              logpointFunction(dataJSON);
           }else{
             console.log("Logpoint function might not be initialized")
           }
@@ -85,5 +85,5 @@ var sidekickConnect = function (clientInfo) {
 };
 
 module.exports = {
-  sidekickConnect,
+  onTrigger
 };
