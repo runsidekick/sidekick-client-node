@@ -1,6 +1,6 @@
 {
   "name": "@runsidekick/sidekick-client",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Sidekick Node.js Client",
   "main": "index.js",
   "scripts": {
