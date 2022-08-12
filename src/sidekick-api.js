@@ -13,6 +13,21 @@ class SidekickApi {
     this.authToken = authToken;
   }
 
+
+/**
+ * @returns {Array<Map>} List of Tracepoints
+ */
+  getAllTracepoints(){
+    return this.#getPoints(common.TRACEPOINT_ENDPOINT)
+
+  }
+/**
+ * @returns {Array<Map>} List of Logpoints
+ */
+  getAllLogpoints(){
+      return this.#getPoints(common.LOGPOINT_ENDPOINT)
+  }
+
   /**
    * Remove existing tracepoint from a file
    * @param {object} tracepointLocation - Tracepoint information to be removed
@@ -70,7 +85,7 @@ class SidekickApi {
   }
 
   #createHeaders({isPost}) {
-    let headers = {
+    const headers = {
       ApiKey: this.apiKey,
       Authorization: "Token " + this.authToken,
       "Content-Type": isPost ? "application/json" : "text/plain",
@@ -78,8 +93,25 @@ class SidekickApi {
     return headers;
   }
 
+
+  async #getPoints(endpoint){
+    const config = {
+      headers: this.#createHeaders({isPost:true}),
+    };
+
+    return axios.get(this.sidekickHost+endpoint,config).
+    then((res)=> {
+      console.log(res);
+      return res;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+
+  }
+
   async #createPoint(endpoint, params) {
-    let config = {
+    const config = {
       headers: this.#createHeaders({isPost:true}),
     };
     return axios
@@ -94,7 +126,7 @@ class SidekickApi {
   }
 
   async #removePoint(endpoint, pointLocation) {
-    let config = {
+    const config = {
       headers: this.#createHeaders({isPost:false}),
       data:
         pointLocation.fileName +
