@@ -101,7 +101,6 @@ class SidekickApi {
 
     return axios.get(this.sidekickHost+endpoint,config).
     then((res)=> {
-      console.log(res);
       return res;
     })
     .catch((error) => {
@@ -117,7 +116,6 @@ class SidekickApi {
     return axios
       .post(this.sidekickHost + endpoint, params, config)
       .then((res) => {
-        console.log(res);
         return res;
       })
       .catch((error) => {
@@ -138,7 +136,6 @@ class SidekickApi {
     return axios
       .delete(this.sidekickHost + endpoint, config)
       .then((res) => {
-        console.log(res);
         return res;
       })
       .catch((error) => {
