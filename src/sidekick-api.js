@@ -15,6 +15,28 @@ class SidekickApi {
 
 
 /**
+ * 
+ * @param {Map} filters 
+ * @returns {Array}
+ */
+getAllApplications(params){
+  const config = {
+    headers: this.#createHeaders({isPost:true}),
+  };
+
+  return axios.post(this.sidekickHost+common.APPLICATIONS_ENDPOINT,params,config).
+  then((res)=> {
+    return res;
+  })
+  .catch((error) => {
+    console.error(error);
+  });
+}
+
+
+
+
+/**
  * @returns {Array<Map>} List of Tracepoints
  */
   getAllTracepoints(){
@@ -96,7 +118,7 @@ class SidekickApi {
 
   async #getPoints(endpoint){
     const config = {
-      headers: this.#createHeaders({isPost:true}),
+      headers: this.#createHeaders({isPost:false}),
     };
 
     return axios.get(this.sidekickHost+endpoint,config).
