@@ -4,13 +4,14 @@ const common = require("../common.js");
 class SidekickApi {
   /**
    * @param {string} apiKey - Your sidekick project's apikey
-   * @param {string} authToken - Your auth token from sidekick
+   * @param {string} apiToken - Your auth token from sidekick
    * @param {string} sidekickHost
+   * @param {string} sidekickPort
    */
-  constructor({ apiKey, authToken }, sidekickHost = common.SIDEKICK_API_HOST) {
-    this.sidekickHost = sidekickHost;
+  constructor({ apiKey, apiToken }, sidekickHost = common.SIDEKICK_API_HOST, sidekickPort = common.SIDEKICK_API_PORT) {
+    this.sidekickHost = sidekickHost + ':' +sidekickPort;
     this.apiKey = apiKey;
-    this.authToken = authToken;
+    this.apiToken = apiToken;
   }
 
 
@@ -109,7 +110,7 @@ getAllApplications(params){
   #createHeaders({isPost}) {
     const headers = {
       ApiKey: this.apiKey,
-      Authorization: "Token " + this.authToken,
+      Authorization: "Token " + this.apiToken,
       "Content-Type": isPost ? "application/json" : "text/plain",
     };
     return headers;
