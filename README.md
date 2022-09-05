@@ -4,12 +4,15 @@
 <!-- PROJECT SHIELDS -->
 
 <!-- PROJECT LOGO -->
-<br />
-<div align="center">
-  <a href="https://www.runsidekick.com">
-    <img src="Sidekick_Logo.svg" alt="Logo" width="200" height="80">
-  </a>
-
+<p align="center">
+  <img width="30%" height="30%" src="https://4750167.fs1.hubspotusercontent-na1.net/hubfs/4750167/Sidekick%20OS%20repo/logo-1.png">
+</p>
+  <p align="center">
+    <a href="https://www.runsidekick.com/discord-invitation?utm_source=sidekick-readme" target="_blank"><img src="https://img.shields.io/discord/958745045308174416?style=for-the-badge&logo=discord&label=DISCORD" alt="Sidekick Discord Channel" /></a>&nbsp;
+    <a href="https://www.runforesight.com?utm_source=sidekick-readme" target="_blank"><img src="https://img.shields.io/badge/Monitored%20by-Foresight-%239900F0?style=for-the-badge" alt="Foresight monitoring" /></a>&nbsp;
+    <a href="https://app.runsidekick.com/sandbox?utm_source=sidekick-readme" target="_blank"><img src="https://img.shields.io/badge/try%20in-sandbox-brightgreen?style=for-the-badge" alt="Sidekick Sandbox" /></a>&nbsp;
+    
+</p>
 
   <h3 align="center">Sidekick Node.js client</h3>
 
