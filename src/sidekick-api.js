@@ -4,13 +4,51 @@ const common = require("../common.js");
 class SidekickApi {
   /**
    * @param {string} apiKey - Your sidekick project's apikey
-   * @param {string} authToken - Your auth token from sidekick
+   * @param {string} apiToken - Your auth token from sidekick
    * @param {string} sidekickHost
+   * @param {string} sidekickPort
    */
-  constructor({ apiKey, authToken }, sidekickHost = common.SIDEKICK_API_HOST) {
-    this.sidekickHost = sidekickHost;
+  constructor({ apiKey, apiToken }, sidekickHost = common.SIDEKICK_API_HOST, sidekickPort = common.SIDEKICK_API_PORT) {
+    this.sidekickHost = sidekickHost + ':' +sidekickPort;
     this.apiKey = apiKey;
-    this.authToken = authToken;
+    this.apiToken = apiToken;
+  }
+
+
+/**
+ * 
+ * @param {Map} filters 
+ * @returns {Array}
+ */
+getAllApplications(params){
+  const config = {
+    headers: this.#createHeaders({isPost:true}),
+  };
+
+  return axios.post(this.sidekickHost+common.APPLICATIONS_ENDPOINT,params,config).
+  then((res)=> {
+    return res;
+  })
+  .catch((error) => {
+    console.error(error);
+  });
+}
+
+
+
+
+/**
+ * @returns {Array<Map>} List of Tracepoints
+ */
+  getAllTracepoints(){
+    return this.#getPoints(common.TRACEPOINT_ENDPOINT)
+
+  }
+/**
+ * @returns {Array<Map>} List of Logpoints
+ */
+  getAllLogpoints(){
+      return this.#getPoints(common.LOGPOINT_ENDPOINT)
   }
 
   /**
@@ -70,22 +108,37 @@ class SidekickApi {
   }
 
   #createHeaders({isPost}) {
-    let headers = {
+    const headers = {
       ApiKey: this.apiKey,
-      Authorization: "Token " + this.authToken,
+      Authorization: "Token " + this.apiToken,
       "Content-Type": isPost ? "application/json" : "text/plain",
     };
     return headers;
   }
 
+
+  async #getPoints(endpoint){
+    const config = {
+      headers: this.#createHeaders({isPost:false}),
+    };
+
+    return axios.get(this.sidekickHost+endpoint,config).
+    then((res)=> {
+      return res;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+
+  }
+
   async #createPoint(endpoint, params) {
-    let config = {
+    const config = {
       headers: this.#createHeaders({isPost:true}),
     };
     return axios
       .post(this.sidekickHost + endpoint, params, config)
       .then((res) => {
-        console.log(res);
         return res;
       })
       .catch((error) => {
@@ -94,7 +147,7 @@ class SidekickApi {
   }
 
   async #removePoint(endpoint, pointLocation) {
-    let config = {
+    const config = {
       headers: this.#createHeaders({isPost:false}),
       data:
         pointLocation.fileName +
@@ -106,7 +159,6 @@ class SidekickApi {
     return axios
       .delete(this.sidekickHost + endpoint, config)
       .then((res) => {
-        console.log(res);
         return res;
       })
       .catch((error) => {

@@ -4,19 +4,19 @@ var reconnectInterval = 10000;
 var ws;
 
 var onTrigger = function (clientInfo) {
-  const sidekick_host = clientInfo.sidekick_host
-    ? clientInfo.sidekick_host
+  const sidekickHost = clientInfo.sidekickHost
+    ? clientInfo.sidekickHost
     : common.SIDEKICK_HOST ;
-  const sidekick_port = clientInfo.sidekick_port
-    ? clientInfo.sidekick_port
+  const sidekickPort = clientInfo.sidekickPort
+    ? clientInfo.sidekickPort
     : 443;
-  const token = clientInfo.sidekick_token;
-  const email = clientInfo.sidekick_email;
-  const password = clientInfo.sidekick_password;
+  const token = clientInfo.sidekickToken;
+  const email = clientInfo.sidekickEmail;
+  const password = clientInfo.sidekickPassword;
   const stdout = clientInfo.stdout;
   const tracepointFunction = clientInfo.tracepointFunction;
   const logpointFunction = clientInfo.logpointFunction;
-  const lpDetail = clientInfo.lpDetail;
+  const errorSnapshotFunction = clientInfo.errorSnapshotFunction;
 
   const options = {
     headers: {
@@ -28,7 +28,7 @@ var onTrigger = function (clientInfo) {
 
   var connect = function () {
     ws = new WebSocket(
-      sidekick_host + ":" + sidekick_port + "/client",
+      sidekickHost + ":" + sidekickPort + "/client",
       options
     );
 
@@ -59,7 +59,26 @@ var onTrigger = function (clientInfo) {
             console.log("Logpoint function might not be initialized")
           }
           
+        }else if (dataJSON.name === "LogPointEvent") {
+        
+          if (logpointFunction) {
+              logpointFunction(dataJSON);
+          }else{
+            console.log("Logpoint function might not be initialized")
+          }
+          
         }
+
+        else if (dataJSON.name === "ErrorStackSnapshotEvent") {
+        
+          if (errorSnapshotFunction) {
+              errorSnapshotFunction(dataJSON);
+          }else{
+            console.log("Error snapshot function might not be initialized")
+          }
+          
+        }
+        
         if (stdout) { 
               console.log("Received data from sidekick:\n ",dataJSON);
           }
