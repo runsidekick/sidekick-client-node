@@ -4,12 +4,15 @@
 <!-- PROJECT SHIELDS -->
 
 <!-- PROJECT LOGO -->
-<br />
-<div align="center">
-  <a href="https://www.runsidekick.com">
-    <img src="Sidekick_Logo.svg" alt="Logo" width="200" height="80">
-  </a>
-
+<p align="center">
+  <img width="30%" height="30%" src="https://4750167.fs1.hubspotusercontent-na1.net/hubfs/4750167/Sidekick%20OS%20repo/logo-1.png">
+</p>
+  <p align="center">
+    <a href="https://www.runsidekick.com/discord-invitation?utm_source=sidekick-readme" target="_blank"><img src="https://img.shields.io/discord/958745045308174416?style=for-the-badge&logo=discord&label=DISCORD" alt="Sidekick Discord Channel" /></a>&nbsp;
+    <a href="https://www.runforesight.com?utm_source=sidekick-readme" target="_blank"><img src="https://img.shields.io/badge/Monitored%20by-Foresight-%239900F0?style=for-the-badge" alt="Foresight monitoring" /></a>&nbsp;
+    <a href="https://app.runsidekick.com/sandbox?utm_source=sidekick-readme" target="_blank"><img src="https://img.shields.io/badge/try%20in-sandbox-brightgreen?style=for-the-badge" alt="Sidekick Sandbox" /></a>&nbsp;
+    
+</p>
 
   <h3 align="center">Sidekick Node.js client</h3>
 
@@ -94,7 +97,7 @@ Tested with node v16.14.2
 
 1. Install sidekick-client
    ```sh 
-   $ npm i sidekick-client
+   $ npm i @runsidekick/sidekick-client
    ```
 
 ## Example usage
@@ -103,12 +106,12 @@ Tested with node v16.14.2
 ###  Put tracepoint on a line
   1. Import `SidekickApi`  
       ```js
-        const { SidekickApi} = require('sidekick-client')
+        const { SidekickApi} = require('@runsidekick/sidekick-client')
       ```
 
   2. Create an instance from Sidekick Api
       ```js
-        const apiClient = new SidekickApi({apiKey:<Your Api Key>, authToken:<Your Account Token>});
+        const apiClient = new SidekickApi({apiKey:<Your Api Key>, apiToken:<Your Account Token>});
 
       ```
   3. Create a parameter that contains your file information to put tracepoint.
@@ -147,17 +150,17 @@ Tested with node v16.14.2
 
 1. Create a `config.json` according to your needs
    ```js
-    "sidekick_tracepoint_index": "sidekick_tracepoint",
-    "sidekick_logpoint_index": "sidekick_logpoint",
-    "sidekick_email": "<Email of your sidekick account>",
-    "sidekick_password": "<Password of your sidekick account>",
+    "SIDEKICK_TRACEPOINT_INDEX": "sidekick_tracepoint",
+    "SIDEKICK_LOGPOINT_INDEX": "sidekick_logpoint",
+    "SIDEKICK_EMAIL": "<Email of your sidekick account>",
+    "SIDEKICK_PASSWORD": "<Password of your sidekick account>",
    ```
 
 
-2. Import `onTrigger` from `sidekick-client`
+2. Import `onTrigger` from `@runsidekick/sidekick-client`
     
     ```js
-        const { onTrigger } = require('sidekick-client')
+        const { onTrigger } = require('@runsidekick/sidekick-client')
     ```
 3. Create an `ingest` function that will send collected data to desired target:
     ```js
@@ -172,10 +175,11 @@ Tested with node v16.14.2
     
     ```js
         const clientInfo = {
-            sidekick_email : config['sidekick_email'], 
-            sidekick_password : config['sidekick_password'], 
-            tracepointFunction : ingestFunc(config['sidekick_tracepoint_index']),
-            logpointFunction : ingestFunc(config['sidekick_logpoint_index'])
+            sidekickEmail : config['SIDEKICK_EMAIL'], 
+            sidekickPassword : config['SIDEKICK_PASSWORD'], 
+            tracepointFunction : ingestFunc(config['SIDEKICK_TRACEPOINT_INDEX']),
+            logpointFunction : ingestFunc(config['SIDEKICK_LOGPOINT_INDEX']),
+            errorSnapshotFunction : ingestFunc(config['SIDEKICK_ERRORSTACK_INDEX'])
         }
 
         onTrigger(clientInfo);
@@ -189,14 +193,14 @@ Then your tracepoint events will be logged. You can customize the `ingest` funct
   If you have an on-premise setup add the fields below to client object (Optional):
 
    ```js
-    "sidekick_host": "ws://127.0.0.1",
-    "sidekick_port": "7777"
+    "sidekickHost": "ws://127.0.0.1",
+    "sidekickPort": "7777"
    ```
 
   If have your user token you can use it instead of email & password (Optional):
 
    ```js
-    "sidekick_token": "<>"
+    "sidekickToken": "<>"
    ```
 
 
