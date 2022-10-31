@@ -2,6 +2,7 @@ const WebSocket = require("ws");
 const common = require("../common.js");
 var reconnectInterval = 10000;
 var ws;
+const { v4: uuidv4 } = require('uuid');
 
 var onTrigger = function (clientInfo) {
   const sidekickHost = clientInfo.sidekickHost
@@ -34,6 +35,7 @@ var onTrigger = function (clientInfo) {
 
     ws.on("open", function open() {
       console.log("Sidekick broker connection : successful");
+      ws.send(JSON.stringify({"type":"Request","name":"EnableCollaborationRequest","id":uuidv4()}));
     });
 
     ws.on("message", function message(data) {
@@ -59,17 +61,7 @@ var onTrigger = function (clientInfo) {
             console.log("Logpoint function might not be initialized")
           }
           
-        }else if (dataJSON.name === "LogPointEvent") {
-        
-          if (logpointFunction) {
-              logpointFunction(dataJSON);
-          }else{
-            console.log("Logpoint function might not be initialized")
-          }
-          
-        }
-
-        else if (dataJSON.name === "ErrorStackSnapshotEvent") {
+        }else if (dataJSON.name === "ErrorStackSnapshotEvent") {
         
           if (errorSnapshotFunction) {
               errorSnapshotFunction(dataJSON);

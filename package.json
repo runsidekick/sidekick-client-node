@@ -25,6 +25,7 @@
   "homepage": "https://github.com/runsidekick/sidekick-client-node#readme",
   "dependencies": {
     "axios": "^0.27.2",
+    "uuid": "^9.0.0",
     "ws": "^8.8.1"
   },
   "devDependencies": {
