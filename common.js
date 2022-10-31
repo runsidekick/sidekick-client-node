@@ -13,4 +13,4 @@ module.exports = {
   TRACEPOINT_ENDPOINT,
   APPLICATIONS_ENDPOINT
 };
-Footer
+
