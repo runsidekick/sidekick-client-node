@@ -135,7 +135,7 @@ Tested with node v16.14.2
       ```
   4. Call `putTracepoint` function
       ```js
-        apiClient.putTracepoints(params);
+        apiClient.putTracepoint(params);
       ```
 
   Then your tracepoint will be added to `line 23` in the given file. Also, you can use `SidekickApi` for any other operations such as removing tracepoint or putting log point.
