@@ -1,10 +1,10 @@
-const WebSocket = require("ws");
 const common = require("../common.js");
-var reconnectInterval = 10000;
-var ws;
 const { v4: uuidv4 } = require('uuid');
+const WebSocketClient = require('websocket').client;
 
-var onTrigger = function (clientInfo) {
+const reconnectInterval = 10000;
+
+const onTrigger = (clientInfo) => {
   const sidekickHost = clientInfo.sidekickHost
     ? clientInfo.sidekickHost
     : common.SIDEKICK_HOST ;
@@ -19,77 +19,88 @@ var onTrigger = function (clientInfo) {
   const logpointFunction = clientInfo.logpointFunction;
   const errorSnapshotFunction = clientInfo.errorSnapshotFunction;
 
-  const options = {
-    headers: {
-      ...(!token && { "x-sidekick-email": email }),
-      ...(!token && { "x-sidekick-password": password }),
-      ...(token && { "x-sidekick-token": token }),
-    },
-  };
+  const connect = () => {
+    let url;
+    if (token) {
+      url = `${sidekickHost}:${sidekickPort}/client/${token}`;
+    } else {
+      url = `${sidekickHost}:${sidekickPort}/client/${email}/${password}`;
+    }
 
-  var connect = function () {
-    ws = new WebSocket(
-      sidekickHost + ":" + sidekickPort + "/client",
-      options
-    );
+    const ws = new WebSocketClient();
 
-    ws.on("open", function open() {
-      console.log("Sidekick broker connection : successful");
-      ws.send(JSON.stringify({"type":"Request","name":"EnableCollaborationRequest","id":uuidv4()}));
-    });
+    ws.on("connect", (connection) => {
 
-    ws.on("message", function message(data) {
-      var dataJSON = {
-        name: "",
-      };
+      connection.on('error', (error) => {
+        console.log("Connection Error: " + error.toString());
+        setTimeout(connect, reconnectInterval);
+      });
 
-      try {
-        dataJSON = JSON.parse(data);
-        if (dataJSON.name === "TracePointSnapshotEvent") {
+      connection.on('close', ()  => {
+        console.log("Sidekick broker connection : closed.");
+        setTimeout(connect, reconnectInterval);
+      });
 
-          if (tracepointFunction) {
-              tracepointFunction(dataJSON);
-          }else{
-            console.log("Tracepoint function might not be initialized")
-          }
+      connection.on('message', function(message) {
+        if (message.type === 'utf8') {
+          const data = message.utf8Data;
+          console.log(`Received: ${data}`);
+          let dataJSON = { name: "" };
+          try {
+            dataJSON = JSON.parse(data);
+            if (dataJSON.name === "TracePointSnapshotEvent") {
 
-        }else if (dataJSON.name === "LogPointEvent") {
-        
-          if (logpointFunction) {
-              logpointFunction(dataJSON);
-          }else{
-            console.log("Logpoint function might not be initialized")
-          }
-          
-        }else if (dataJSON.name === "ErrorStackSnapshotEvent") {
-        
-          if (errorSnapshotFunction) {
-              errorSnapshotFunction(dataJSON);
-          }else{
-            console.log("Error snapshot function might not be initialized")
-          }
-          
-        }
-        
-        if (stdout) { 
+              if (tracepointFunction) {
+                tracepointFunction(dataJSON);
+              }else{
+                console.log("Tracepoint function might not be initialized")
+              }
+
+            }else if (dataJSON.name === "LogPointEvent") {
+
+              if (logpointFunction) {
+                logpointFunction(dataJSON);
+              }else{
+                console.log("Logpoint function might not be initialized")
+              }
+
+            }else if (dataJSON.name === "ErrorStackSnapshotEvent") {
+
+              if (errorSnapshotFunction) {
+                errorSnapshotFunction(dataJSON);
+              }else{
+                console.log("Error snapshot function might not be initialized")
+              }
+
+            }
+
+            if (stdout) {
               console.log("Received data from sidekick:\n ",dataJSON);
+            }
+          } catch(err) {
+            console.log(err);
           }
-      } catch(err) {
-        console.log(err);
+        }
+      });
+
+      const enableCollaboration = () => {
+        if (connection.connected) {
+          const message = {"type":"Request","name":"ListApplicationsRequest","id":"c27ba8c7-c457-4236-89c3-430203577af5","applicationNames":[],"applicationStages":[],"applicationVersions":[]};
+          try {
+            connection.send(JSON.stringify({"type":"Request","name":"EnableCollaborationRequest","id":uuidv4()}));
+          } catch (e) {
+            console.error(e);
+          }
+        }
       }
 
+      enableCollaboration();
 
+
+      console.log("Sidekick broker connection : successful");
     });
 
-    ws.on("error", function (value) {
-        console.log(value)
-      setTimeout(connect, reconnectInterval);
-    });
-
-    ws.on("close", function () {
-      console.log("Sidekick broker connection : closed.");
-      setTimeout(connect, reconnectInterval);
-    });
+    ws.connect(url);
   };
 
   connect();
