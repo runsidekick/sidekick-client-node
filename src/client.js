@@ -20,11 +20,11 @@ const onTrigger = (clientInfo) => {
   const errorSnapshotFunction = clientInfo.errorSnapshotFunction;
 
   const connect = () => {
-    let url;
-    if (token) {
-      url = `${sidekickHost}:${sidekickPort}/client/${token}`;
-    } else {
-      url = `${sidekickHost}:${sidekickPort}/client/${email}/${password}`;
+    let url = `${sidekickHost}:${sidekickPort}/client/`;
+    const headers = {
+      ...(!token && { "x-sidekick-email": email }),
+      ...(!token && { "x-sidekick-password": password }),
+      ...(token && { "x-sidekick-token": token }),
     }
 
     const ws = new WebSocketClient();
@@ -100,7 +100,7 @@ const onTrigger = (clientInfo) => {
       console.log("Sidekick broker connection : successful");
     });
 
-    ws.connect(url);
+    ws.connect(url, null, null, headers);
   };
 
   connect();
