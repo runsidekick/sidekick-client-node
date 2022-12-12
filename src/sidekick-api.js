@@ -22,7 +22,7 @@ class SidekickApi {
      */
     async getAllApplications(params) {
         const config = {
-            headers: this.#createHeaders({isPost: true}),
+            headers: this._createHeaders({isPost: true}),
         };
         return axios
             .post(this.sidekickHost + common.APPLICATIONS_ENDPOINT, params, config)
@@ -44,7 +44,7 @@ class SidekickApi {
      * @returns {Array<Map>} List of Tracepoints
      */
     getAllTracepoints() {
-        return this.#getPoints(common.TRACEPOINT_ENDPOINT)
+        return this._getPoints(common.TRACEPOINT_ENDPOINT)
 
     }
 
@@ -63,7 +63,7 @@ class SidekickApi {
      * @param {Array<string>=} params.tags
      */
     putTracepoint(params) {
-        return this.#createPoint(common.TRACEPOINT_ENDPOINT, params);
+        return this._createPoint(common.TRACEPOINT_ENDPOINT, params);
     }
 
     /**
@@ -74,7 +74,7 @@ class SidekickApi {
      * @param {string} tracepointLocation.email - Your sidekick email
      */
     removeTracepoint(tracepointLocation) {
-        return this.#removePoint(common.TRACEPOINT_ENDPOINT, tracepointLocation);
+        return this._removePoint(common.TRACEPOINT_ENDPOINT, tracepointLocation);
     }
 
     /**
@@ -85,7 +85,7 @@ class SidekickApi {
      * @param {string} tracepointLocation.email - Your sidekick email
      */
     disableTracepoint(tracepointLocation) {
-        return this.#togglePoint(common.TRACEPOINT_ENDPOINT, true, tracepointLocation);
+        return this._togglePoint(common.TRACEPOINT_ENDPOINT, true, tracepointLocation);
     }
 
     /**
@@ -96,7 +96,7 @@ class SidekickApi {
      * @param {string} tracepointLocation.email - Your sidekick email
      */
     enableTracepoint(tracepointLocation) {
-        return this.#togglePoint(common.TRACEPOINT_ENDPOINT, false, tracepointLocation);
+        return this._togglePoint(common.TRACEPOINT_ENDPOINT, false, tracepointLocation);
     }
 
     /* ------------------------------------------- */
@@ -109,7 +109,7 @@ class SidekickApi {
      * @returns {Array<Map>} List of Logpoints
      */
     getAllLogpoints() {
-        return this.#getPoints(common.LOGPOINT_ENDPOINT)
+        return this._getPoints(common.LOGPOINT_ENDPOINT)
     }
 
     /**
@@ -128,7 +128,7 @@ class SidekickApi {
      * @param {Array<string>=} params.tags
      */
     putLogpoint(params) {
-        return this.#createPoint(common.LOGPOINT_ENDPOINT, params);
+        return this._createPoint(common.LOGPOINT_ENDPOINT, params);
     }
 
     /**
@@ -139,7 +139,7 @@ class SidekickApi {
      * @param {string} logpointLocation.email - Your sidekick email
      */
     removeLogpoint(logpointLocation) {
-        return this.#removePoint(common.LOGPOINT_ENDPOINT, logpointLocation);
+        return this._removePoint(common.LOGPOINT_ENDPOINT, logpointLocation);
     }
 
     /**
@@ -150,7 +150,7 @@ class SidekickApi {
      * @param {string} logpointLocation.email - Your sidekick email
      */
     disableLogpoint(logpointLocation) {
-        return this.#togglePoint(common.LOGPOINT_ENDPOINT, true, logpointLocation);
+        return this._togglePoint(common.LOGPOINT_ENDPOINT, true, logpointLocation);
     }
 
     /**
@@ -161,7 +161,7 @@ class SidekickApi {
      * @param {string} logpointLocation.email - Your sidekick email
      */
     enableLogpoint(logpointLocation) {
-        return this.#togglePoint(common.LOGPOINT_ENDPOINT, false, logpointLocation);
+        return this._togglePoint(common.LOGPOINT_ENDPOINT, false, logpointLocation);
     }
 
     /* ------------------------------------------- */
@@ -174,7 +174,7 @@ class SidekickApi {
      * @returns {Array<Map>} List of ProbeTags
      */
     getAllProbeTags() {
-        return this.#getProbeTags(common.PROBE_TAGS_ENDPOINT);
+        return this._getProbeTags(common.PROBE_TAGS_ENDPOINT);
     }
 
     /**
@@ -182,7 +182,7 @@ class SidekickApi {
      * @param {string} tag - Tag to be disabled
      */
     disableProbeTag(tag) {
-        return this.#toggleTag(common.PROBE_TAGS_ENDPOINT, true, tag);
+        return this._toggleTag(common.PROBE_TAGS_ENDPOINT, true, tag);
     }
 
     /**
@@ -190,7 +190,7 @@ class SidekickApi {
      * @param {string} tag - Tag to be enabled
      */
     enableProbeTag(tag) {
-        return this.#toggleTag(common.PROBE_TAGS_ENDPOINT, false, tag);
+        return this._toggleTag(common.PROBE_TAGS_ENDPOINT, false, tag);
     }
 
     /* ------------------------------------------- */
@@ -210,7 +210,7 @@ class SidekickApi {
      * @param {string} params.location.email - Your sidekick email
      */
     tracepointReferenceEvent(params) {
-        return this.#getReferenceEvent(common.REFERENCE_EVENT_ENDPOINT + "/tracepoint", params);
+        return this._getReferenceEvent(common.REFERENCE_EVENT_ENDPOINT + "/tracepoint", params);
     }
 
     /**
@@ -224,7 +224,7 @@ class SidekickApi {
      * @param {string} params.location.email - Your sidekick email
      */
     logpointReferenceEvent(params) {
-        return this.#getReferenceEvent(common.REFERENCE_EVENT_ENDPOINT + "/logpoint", params);
+        return this._getReferenceEvent(common.REFERENCE_EVENT_ENDPOINT + "/logpoint", params);
     }
 
     /* ------------------------------------------- */
@@ -251,7 +251,7 @@ class SidekickApi {
      * @param {date} params.endDate - Date Range End Date
      */
     listEventHistory(page, size, params) {
-        return this.#getEventHistory(common.EVENT_HISTORY_ENDPOINT, page, size, params);
+        return this._getEventHistory(common.EVENT_HISTORY_ENDPOINT, page, size, params);
     }
 
     /**
@@ -271,10 +271,10 @@ class SidekickApi {
      * @param {string} params.groupBy - DAILY, HOURLY
      */
     eventHistoryMetric(params) {
-        return this.#eventHistoryMetric(common.EVENT_HISTORY_ENDPOINT + "/count", params);
+        return this._eventHistoryMetric(common.EVENT_HISTORY_ENDPOINT + "/count", params);
     }
 
-    #createHeaders({isPost}) {
+    _createHeaders({isPost}) {
         const headers = {
             ApiKey: this.apiKey,
             Authorization: "Token " + this.apiToken,
@@ -284,9 +284,9 @@ class SidekickApi {
     }
 
 
-    async #getPoints(endpoint) {
+    async _getPoints(endpoint) {
         const config = {
-            headers: this.#createHeaders({isPost: false}),
+            headers: this._createHeaders({isPost: false}),
         };
 
         return axios
@@ -300,9 +300,9 @@ class SidekickApi {
 
     }
 
-    async #createPoint(endpoint, params) {
+    async _createPoint(endpoint, params) {
         const config = {
-            headers: this.#createHeaders({isPost: true}),
+            headers: this._createHeaders({isPost: true}),
         };
         return axios
             .post(this.sidekickHost + endpoint, params, config)
@@ -314,10 +314,10 @@ class SidekickApi {
             });
     }
 
-    async #removePoint(endpoint, pointLocation) {
+    async _removePoint(endpoint, pointLocation) {
         const config = {
-            headers: this.#createHeaders({isPost: false}),
-            data: this.#getPointId(pointLocation)
+            headers: this._createHeaders({isPost: false}),
+            data: this._getPointId(pointLocation)
         };
         return axios
             .delete(this.sidekickHost + endpoint, config)
@@ -329,13 +329,13 @@ class SidekickApi {
             });
     }
 
-    async #togglePoint(endpoint, disable, pointLocation) {
+    async _togglePoint(endpoint, disable, pointLocation) {
         endpoint = `${endpoint}/${(disable ? "disable" : "enable")}`;
         const config = {
-            headers: this.#createHeaders({isPost: false})
+            headers: this._createHeaders({isPost: false})
         };
         return axios
-            .put(this.sidekickHost + endpoint, this.#getPointId(pointLocation), config)
+            .put(this.sidekickHost + endpoint, this._getPointId(pointLocation), config)
             .then((res) => {
                 return res;
             })
@@ -344,9 +344,9 @@ class SidekickApi {
             });
     }
 
-    async #getProbeTags(endpoint) {
+    async _getProbeTags(endpoint) {
         const config = {
-            headers: this.#createHeaders({isPost: false}),
+            headers: this._createHeaders({isPost: false}),
         };
 
         return axios
@@ -360,10 +360,10 @@ class SidekickApi {
 
     }
 
-    async #toggleTag(endpoint, disable, tag) {
+    async _toggleTag(endpoint, disable, tag) {
         endpoint += `/${(disable ? "disable" : "enable")}`;
         const config = {
-            headers: this.#createHeaders({isPost: true})
+            headers: this._createHeaders({isPost: true})
         };
         return axios
             .put(this.sidekickHost + endpoint, {"tag": tag}, config)
@@ -375,10 +375,10 @@ class SidekickApi {
             });
     }
 
-    async #getReferenceEvent(endpoint, params) {
+    async _getReferenceEvent(endpoint, params) {
         params.id = params.location.fileName + "::" + params.location.line + "::" + params.location.email;
         const config = {
-            headers: this.#createHeaders({isPost: true}),
+            headers: this._createHeaders({isPost: true}),
         };
         return axios
             .post(this.sidekickHost + endpoint, params, config)
@@ -391,9 +391,9 @@ class SidekickApi {
 
     }
 
-    async #getEventHistory(endpoint, page, size, params) {
+    async _getEventHistory(endpoint, page, size, params) {
         const config = {
-            headers: this.#createHeaders({isPost: true}),
+            headers: this._createHeaders({isPost: true}),
         };
         return axios
             .post(`${this.sidekickHost}${endpoint}?page=${page}&size=${size}`, params, config)
@@ -406,9 +406,9 @@ class SidekickApi {
 
     }
 
-    async #eventHistoryMetric(endpoint, params) {
+    async _eventHistoryMetric(endpoint, params) {
         const config = {
-            headers: this.#createHeaders({isPost: true}),
+            headers: this._createHeaders({isPost: true}),
         };
         return axios
             .post(`${this.sidekickHost}${endpoint}`, params, config)
@@ -428,7 +428,7 @@ class SidekickApi {
      * @param {number} pointLocation.line - Line
      * @param {string} pointLocation.email - Your sidekick email
      */
-    #getPointId(pointLocation) {
+    _getPointId(pointLocation) {
         return `${pointLocation.fileName}::${pointLocation.line}::${pointLocation.email}`;
     }
 
