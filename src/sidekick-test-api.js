@@ -28,7 +28,7 @@ class SidekickTestApi {
      * @returns {Array<String>} List of Events
      */
     getTracePointEvents(params) {
-        return this.#getEvents(`${common.TEST_MODE_EVENT_ENDPOINT}/tracepoint`, params);
+        return this._getEvents(`${common.TEST_MODE_EVENT_ENDPOINT}/tracepoint`, params);
 
     }
 
@@ -42,7 +42,7 @@ class SidekickTestApi {
      * @returns {Array<String>} List of Events
      */
     getTracePointEventsByTag(tag,params) {
-        return this.#getEventsByTag(`${common.TEST_MODE_EVENT_ENDPOINT}/tracepoint/${tag}`, params);
+        return this._getEventsByTag(`${common.TEST_MODE_EVENT_ENDPOINT}/tracepoint/${tag}`, params);
     }
 
     /**
@@ -54,7 +54,7 @@ class SidekickTestApi {
      * @returns {Array<String>} List of Events
      */
     getLogPointEvents(params) {
-        return this.#getEvents(`${common.TEST_MODE_EVENT_ENDPOINT}/logpoint`, params);
+        return this._getEvents(`${common.TEST_MODE_EVENT_ENDPOINT}/logpoint`, params);
 
     }
 
@@ -68,7 +68,7 @@ class SidekickTestApi {
      * @returns {Array<String>} List of Events
      */
     getLogPointEventsByTag(tag,params) {
-        return this.#getEventsByTag(`${common.TEST_MODE_EVENT_ENDPOINT}/logpoint/${tag}`);
+        return this._getEventsByTag(`${common.TEST_MODE_EVENT_ENDPOINT}/logpoint/${tag}`);
     }
 
     /**
@@ -76,20 +76,20 @@ class SidekickTestApi {
      * @returns {Array<String>} List of Events
      */
     getErrorSnapshots(appName) {
-        return this.#getErrorSnapshotsEvents(`${common.TEST_MODE_EVENT_ENDPOINT}/errorstack/${appName}`);
+        return this._getErrorSnapshotsEvents(`${common.TEST_MODE_EVENT_ENDPOINT}/errorstack/${appName}`);
     }
 
     /**
      * @param {string} eventType - ERROR_STACK_SNAPSHOT, LOGPOINT, TRACEPOINT_SNAPSHOT
      */
     flush(eventType) {
-        return this.#flush(`${common.TEST_MODE_EVENT_ENDPOINT}/flush?eventType=${eventType}`);
+        return this._flush(`${common.TEST_MODE_EVENT_ENDPOINT}/flush?eventType=${eventType}`);
     }
 
     /**
      */
     flushAll() {
-        return this.#flush(`${common.TEST_MODE_EVENT_ENDPOINT}/flushAll`);
+        return this._flush(`${common.TEST_MODE_EVENT_ENDPOINT}/flushAll`);
     }
 
     /**
@@ -101,10 +101,10 @@ class SidekickTestApi {
      * @returns {Array<object>} List of Events
      */
     getReferenceEvent(probeName,params) {
-        return this.#getReferenceEvent(`${common.TEST_MODE_EVENT_ENDPOINT}/referenceevent/${probeName}`, params);
+        return this._getReferenceEvent(`${common.TEST_MODE_EVENT_ENDPOINT}/referenceevent/${probeName}`, params);
     }
 
-    #createHeaders() {
+    _createHeaders() {
         const headers = {
             Authorization: "Bearer " + this.apiKey,
             "Content-Type": "application/json",
@@ -112,9 +112,9 @@ class SidekickTestApi {
         return headers;
     }
 
-    async #getEvents(endpoint, params) {
+    async _getEvents(endpoint, params) {
         const config = {
-            headers: this.#createHeaders(),
+            headers: this._createHeaders(),
         };
 
         return axios
@@ -127,9 +127,9 @@ class SidekickTestApi {
             });
     }
 
-    async #getEventsByTag(endpoint, params) {
+    async _getEventsByTag(endpoint, params) {
         const config = {
-            headers: this.#createHeaders(),
+            headers: this._createHeaders(),
         };
 
         return axios
@@ -142,9 +142,9 @@ class SidekickTestApi {
             });
     }
 
-    async #getErrorSnapshotsEvents(endpoint, params) {
+    async _getErrorSnapshotsEvents(endpoint, params) {
         const config = {
-            headers: this.#createHeaders(),
+            headers: this._createHeaders(),
         };
 
         return axios
@@ -157,9 +157,9 @@ class SidekickTestApi {
             });
     }
 
-    async #getReferenceEvent(endpoint, params) {
+    async _getReferenceEvent(endpoint, params) {
         const config = {
-            headers: this.#createHeaders(),
+            headers: this._createHeaders(),
         };
 
         return axios
@@ -172,9 +172,9 @@ class SidekickTestApi {
             });
     }
 
-    async #flush(endpoint) {
+    async _flush(endpoint) {
         const config = {
-            headers: this.#createHeaders(),
+            headers: this._createHeaders(),
         };
 
         return axios
